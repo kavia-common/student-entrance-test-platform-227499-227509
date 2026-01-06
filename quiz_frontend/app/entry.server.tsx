@@ -24,17 +24,10 @@ export default function handleRequest(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loadContext: AppLoadContext
 ) {
-  responseHeaders.set('Access-Control-Allow-Origin', '*');
-  responseHeaders.set('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-  responseHeaders.set('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-  
-  if (request.method.toLowerCase() === 'options') {
-    return new Response(null, {
-      status: 204,
-      headers: responseHeaders,
-    });
-  }
-
+  // NOTE:
+  // Remix serves HTML/documents from this server. CORS headers are not needed here for
+  // normal browser navigation. API calls are made server-side (loaders/actions) to the
+  // Express backend, and the Express backend should be responsible for API CORS.
   return isbot(request.headers.get("user-agent") || "")
     ? handleBotRequest(
         request,
